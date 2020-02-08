@@ -28,5 +28,6 @@ echo "dmg created"
 mv "${project.build.directory}/PDFsam Basic-${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}.dmg" "${project.build.directory}/pdfsam-${project.version}.dmg" || exit 1
 echo "dmg renamed to pdfsam-${project.version}.dmg"
 
-codesign --force --sign "Sober" "${project.build.directory}/pdfsam-${project.version}.dmg" || exit 1
+# "Apple" is the name of my lcoal development key
+codesign --force --sign "Apple" "${project.build.directory}/pdfsam-${project.version}.dmg" || exit 1
 echo "dmg signed"
