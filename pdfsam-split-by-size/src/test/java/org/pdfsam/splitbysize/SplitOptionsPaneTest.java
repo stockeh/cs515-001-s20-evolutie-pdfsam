@@ -76,7 +76,7 @@ public class SplitOptionsPaneTest extends ApplicationTest {
         clickOn("#unit" + SizeUnit.MEGABYTE.symbol());
         victim.apply(builder, onError);
         verify(onError, never()).accept(anyString());
-        verify(builder).size(eq(30 * 1024 * 1024L));
+        verify(builder).size(eq(30 * 1000 * 1000L));
     }
 
     @Test
