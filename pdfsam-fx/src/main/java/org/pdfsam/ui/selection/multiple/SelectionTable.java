@@ -148,29 +148,37 @@ public class SelectionTable extends TableView<SelectionTableRowData> implements 
     }
 
     private void initTopSectionContextMenu(ContextMenu contextMenu, boolean hasRanges) {
-        MenuItem setDestinationItem = createMenuItem(DefaultI18nContext.getInstance().i18n("Set destination"),
-                MaterialDesignIcon.AIRPLANE_LANDING);
-        setDestinationItem.setOnAction(e -> eventStudio().broadcast(
-                requestDestination(getSelectionModel().getSelectedItem().descriptor().getFile(), getOwnerModule()),
-                getOwnerModule()));
-        setDestinationItem.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.ALT_DOWN));
-
-        selectionChangedConsumer = e -> setDestinationItem.setDisable(!e.isSingleSelection());
-        contextMenu.getItems().add(setDestinationItem);
+        MenuItem setDestinationItem = setDestinationItem();
+		contextMenu.getItems().add(setDestinationItem);
 
         if (hasRanges) {
-            MenuItem setPageRangesItem = createMenuItem(DefaultI18nContext.getInstance().i18n("Set as range for all"),
-                    MaterialDesignIcon.FORMAT_INDENT_INCREASE);
-            setPageRangesItem.setOnAction(e -> eventStudio().broadcast(
-                    new SetPageRangesRequest(getSelectionModel().getSelectedItem().pageSelection.get()),
-                    getOwnerModule()));
-            setPageRangesItem.setAccelerator(new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN));
-            selectionChangedConsumer = selectionChangedConsumer
-                    .andThen(e -> setPageRangesItem.setDisable(!e.isSingleSelection()));
-            contextMenu.getItems().add(setPageRangesItem);
+            MenuItem setPageRangesItem = setPageRangesItem();
+			contextMenu.getItems().add(setPageRangesItem);
         }
         contextMenu.getItems().add(new SeparatorMenuItem());
     }
+
+	MenuItem setPageRangesItem() {
+		MenuItem setPageRangesItem = createMenuItem(DefaultI18nContext.getInstance().i18n("Set as range for all"),
+				MaterialDesignIcon.FORMAT_INDENT_INCREASE);
+		setPageRangesItem.setOnAction(e -> eventStudio().broadcast(
+				new SetPageRangesRequest(getSelectionModel().getSelectedItem().pageSelection.get()), getOwnerModule()));
+		setPageRangesItem.setAccelerator(new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN));
+		selectionChangedConsumer = selectionChangedConsumer
+				.andThen(e -> setPageRangesItem.setDisable(!e.isSingleSelection()));
+		return setPageRangesItem;
+	}
+
+	MenuItem setDestinationItem() {
+		MenuItem setDestinationItem = createMenuItem(DefaultI18nContext.getInstance().i18n("Set destination"),
+				MaterialDesignIcon.AIRPLANE_LANDING);
+		setDestinationItem.setOnAction(e -> eventStudio().broadcast(
+				requestDestination(getSelectionModel().getSelectedItem().descriptor().getFile(), getOwnerModule()),
+				getOwnerModule()));
+		setDestinationItem.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.ALT_DOWN));
+		selectionChangedConsumer = e -> setDestinationItem.setDisable(!e.isSingleSelection());
+		return setDestinationItem;
+	}
 
     private void initItemsSectionContextMenu(ContextMenu contextMenu, boolean canDuplicate, boolean canMove) {
 

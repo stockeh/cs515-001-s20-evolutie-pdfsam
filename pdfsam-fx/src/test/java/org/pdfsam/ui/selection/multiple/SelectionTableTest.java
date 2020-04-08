@@ -73,9 +73,12 @@ import org.testfx.util.WaitForAsyncUtils;
 
 import javafx.collections.FXCollections;
 import javafx.scene.Scene;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -158,6 +161,20 @@ public class SelectionTableTest extends ApplicationTest {
         eventStudio().add(PdfLoadRequestEvent.class, listener);
         assertEquals(4, victim.getItems().size());
         verify(listener).onEvent(any());
+    }
+    
+    @Test
+    public void setPageRangesItem() {
+    	MenuItem pageRangesItem = victim.setPageRangesItem();
+        assertTrue(new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN).equals(
+        		pageRangesItem.getAccelerator()) );
+    }
+    
+    @Test
+    public void setDestinationItem() {
+    	MenuItem pageRangesItem = victim.setDestinationItem();
+        assertTrue(new KeyCodeCombination(KeyCode.O, KeyCombination.ALT_DOWN).equals(
+        		pageRangesItem.getAccelerator()) );
     }
 
     @Test
